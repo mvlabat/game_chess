@@ -31,5 +31,4 @@ jobs :
             killall chess_server ;
             cp target/release/chess_server ~/chess_server
             nohup ~/chess_server &
-            ps aux | grep -i chess_server
 
