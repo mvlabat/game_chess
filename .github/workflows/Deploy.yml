@@ -56,7 +56,7 @@ jobs :
       #  ~/.cargo/bin/cargo make web_build_release
       #       cp -R target/web/* ${{ secrets.PRIVATE_SERVER_PATH }}/chess
 
-      - name: executing remote ssh commands
+      - name: Build server and web on remote
         uses: appleboy/ssh-action@master
         with:
           host: ${{ secrets.PRIVATE_SERVER_HOST }}
@@ -68,7 +68,7 @@ jobs :
             cd chess_mirror
             git pull
             ~/.cargo/bin/cargo build --bin server --release
-            cp target/release/server target/server
+            cp target/release/server target/chess_server
             ~/.cargo/bin/cargo make web_build_release
             cp -R target/web/* ${{ secrets.PRIVATE_SERVER_PATH }}
 
