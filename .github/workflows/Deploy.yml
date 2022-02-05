@@ -23,6 +23,7 @@ jobs :
           script: |
             git clone https://github.com/Wandalen/game_chess.git chess_mirror
             cd chess_mirror
+            git checkout deploy
             git pull
             ~/.cargo/bin/cargo build --bin chess_server --release
             ~/.cargo/bin/cargo make web_build_release
