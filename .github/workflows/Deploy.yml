@@ -3,21 +3,21 @@ name : Deploy
 
 on :
   push:
-    branches : [ main ]
+    branches : [ deploy ]
 
 env:
   CARGO_TERM_COLOR: always
 
 jobs :
 
-  web:
-    uses: Wandalen/game_chess/.github/workflows/WebCommon.yml@main
-    with:
-      artifacts: 'true'
-      toolchain: 'nightly'
+  # web:
+  #   uses: Wandalen/game_chess/.github/workflows/WebCommon.yml@main
+  #   with:
+  #     artifacts: 'true'
+  #     toolchain: 'nightly'
 
   artifacts_forward :
-    needs: [ web ]
+    # needs: [ web ]
     runs-on : ubuntu-latest
     steps :
       - uses: actions/checkout@v2
@@ -28,23 +28,30 @@ jobs :
         with:
           toolchain: stable
           override: true
-      - run : cargo doc
-      - run : cp -R target/doc build
+      - run: sudo apt install libudev-dev libalsa-ocaml-dev libxcb-render0-dev libxcb-shape0-dev libxcb-xfixes0-dev
+      - run: cargo doc
+      # - run : cp -R target/doc build
+      - run: zip -r build/doc.zip target/doc
       - uses: actions/download-artifact@v2
         with:
           name: web
           path: build
 
 
-      - name: host
-        run: "::set-output name=host::$(echo ${{ secrets.PRIVATE_SERVER }} | cut -d'@' -f1)"
+      # - name: host
+      #   run: "::set-output name=host::$(echo ${{ secrets.PRIVATE_SERVER }} | cut -d'@' -f1)"
       - uses: kielabokkie/ssh-key-and-known-hosts-action@v1
         with:
           ssh-private-key: ${{ secrets.PRIVATE_SERVER_PRIVATE_KEY }}
-          ssh-host: ${{ steps.host.outputs.host }}
+          # ssh-host: ${{ steps.host.outputs.host }}
+          ssh-host: ${{ PRIVATE_SERVER_HOST}}
       - run : sudo apt install sshfs
       - run : mkdir mnt
       - name : Setup mountpoin
         run : sshfs -o follow_symlinks,StrictHostKeyChecking=no ${{ secrets.PRIVATE_SERVER }}:${{ secrets.PRIVATE_SERVER_PRIVATE_KEY }} ./mnt
-      - run : cp -R build/* ./mnt
+      - run : mkdir ./mnt/chess
+      - run : cp -R build/* ./mnt/chess
       - run : umount ./mnt
+
+
+      
