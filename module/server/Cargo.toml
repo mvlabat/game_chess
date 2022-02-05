@@ -6,6 +6,7 @@ authors = [
   "Kostiantyn Wandalen <wandalen@obox.systems>",
   "Volodymyr M. <volodymyr.migdal@gmail.com>",
   "Dmytro Kryvoruchko <dm.vict.kr@gmail.com>",
+  "Pavlo Myroniuk <pspos.developqkation@gmail.com>",
 ]
 license = "MIT"
 readme = "Readme.md"
@@ -29,7 +30,7 @@ name = "game_chess_server"
 path = "./src/lib.rs"
 
 [[bin]]
-name = "server"
+name = "chess_server"
 path = "./src/main.rs"
 
 [dependencies]
