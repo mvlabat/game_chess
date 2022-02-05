@@ -19,7 +19,7 @@ jobs :
           host: ${{ secrets.PRIVATE_SERVER_HOST }}
           username: ${{ secrets.PRIVATE_SERVER_USER }}
           key: ${{ secrets.PRIVATE_SERVER_PRIVATE_KEY }}
-          command_timeout: 60m
+          command_timeout: 30m
           script: |
             git clone https://github.com/Wandalen/game_chess.git chess_mirror
             cd chess_mirror
@@ -30,5 +30,6 @@ jobs :
             cp -R target/web/* ${{ secrets.PRIVATE_SERVER_PATH }}
             killall chess_server ;
             cp target/release/chess_server ~/chess_server
-            nohup ~/chess_server &
+            nohup ~/chess_server > ~/chess_server.log 2>&1
+            ps aux | grep -i chess_server
 
