@@ -67,7 +67,7 @@ jobs :
             git clone https://github.com/Wandalen/game_chess.git chess_mirror
             cd chess_mirror
             git pull
-            ~/.cargo/bin/cargo doc
+            ~/.cargo/bin/cargo doc --no-deps
             cp -R target/doc/* ${{ secrets.PRIVATE_SERVER_PATH }}/doc
             ~/.cargo/bin/cargo make web_build_release
             cp -R target/web/* ${{ secrets.PRIVATE_SERVER_PATH }}
